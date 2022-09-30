@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>f32f2400-b720-412b-bf56-95dc851eb8c8</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.3.0" />
+    <PackageReference Include="Mapster.DependencyInjection" Version="1.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SiNote.Application\SiNote.Application.csproj" />
+    <ProjectReference Include="..\SiNote.Contracts\SiNote.Contracts.csproj" />
+    <ProjectReference Include="..\SiNote.Domain\SiNote.Domain.csproj" />
+    <ProjectReference Include="..\SiNote.Infrastructure\SiNote.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
