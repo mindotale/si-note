@@ -1,7 +1,10 @@
 ﻿using BubberDinner.Api.Common.Mapping;
+using Mapster;
+using MapsterMapper;
 using Microsoft.OpenApi.Models;
 using SiNote.Api.Services;
 using SiNote.Application.Common.Interfaces.Authentication;
+using System.Reflection;
 
 namespace SiNote.Api;
 
@@ -49,6 +52,17 @@ public static class DependencyInjection
                 }
             });
         });
+
+        return services;
+    }
+
+    private static IServiceCollection AddMappings(this IServiceCollection services)
+    {
+        var config = TypeAdapterConfig.GlobalSettings;
+        config.Scan(typeof(SiNote.Api.AssemblyReference).Assembly);
+        config.Scan(typeof(SiNote.Application.DependencyInjection).Assembly);
+        services.AddSingleton(config);
+        services.AddScoped<IMapper, ServiceMapper>();
 
         return services;
     }
