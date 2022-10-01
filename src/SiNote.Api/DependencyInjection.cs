@@ -1,4 +1,6 @@
 ﻿using BubberDinner.Api.Common.Mapping;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Mapster;
 using MapsterMapper;
 using Microsoft.OpenApi.Models;
@@ -16,7 +18,7 @@ public static class DependencyInjection
         services.AddMappings();
         services.AddHttpContextAccessor();
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
-
+        services.AddValidation();
         services.AddSwagger();
 
         return services;
@@ -64,6 +66,16 @@ public static class DependencyInjection
         services.AddSingleton(config);
         services.AddScoped<IMapper, ServiceMapper>();
 
+        return services;
+    }
+
+    private static IServiceCollection AddValidation(this IServiceCollection services)
+    {
+        services.AddFluentValidationAutoValidation(options =>
+        {
+            options.DisableDataAnnotationsValidation = true;
+        });
+        services.AddValidatorsFromAssemblyContaining<SiNote.Api.AssemblyReference>();
         return services;
     }
 }
