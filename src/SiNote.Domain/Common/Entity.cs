@@ -1,61 +1,46 @@
 ﻿namespace SiNote.Domain.Common;
 
-public abstract class Entity : IEquatable<Entity>
+public abstract class Entity<TId> : IEquatable<Entity<TId>>
+    where TId : notnull
 {
-    protected Entity(Guid id)
+    protected Entity(TId id)
     {
+        if(Equals(id, default(TId)))
+        {
+            throw new ArgumentException("The ID cannot be the default value", nameof(id));
+        }
         Id = id;
     }
 
-    public Guid Id { get; private set; }
+    public TId Id { get; private set; }
 
-    public static bool operator ==(Entity? first, Entity? second)
+    public static bool operator ==(Entity<TId>? left, Entity<TId>? right)
     {
-        return first is not null && second is not null && first.Equals(second);
+        return left?.Equals(right) ?? false;
     }
 
-    public static bool operator !=(Entity? first, Entity? second)
+    public static bool operator !=(Entity<TId>? left, Entity<TId>? right)
     {
-        return !(first == second);
+        return !(left == right);
     }
 
-    public bool Equals(Entity? other)
+    public override bool Equals(object? obj)
+    {
+        return obj is Entity<TId> entity && Equals(entity); 
+    }
+
+    public bool Equals(Entity<TId>? other)
     {
         if (other is null)
         {
             return false;
         }
 
-        if (other.GetType() != GetType())
-        {
-            return false;
-        }
-
-        return other.Id == Id;
-    }
-
-    public override bool Equals(object? obj)
-    {
-        if (obj is null)
-        {
-            return false;
-        }
-
-        if (obj.GetType() != GetType())
-        {
-            return false;
-        }
-
-        if (obj is not Entity entity)
-        {
-            return false;
-        }
-
-        return entity.Id == Id;
+        return Id.Equals(other.Id);
     }
 
     public override int GetHashCode()
     {
-        return Id.GetHashCode() * 3;
+        return Id.GetHashCode();
     }
 }
