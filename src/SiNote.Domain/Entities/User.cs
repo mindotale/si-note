@@ -1,6 +1,6 @@
 ﻿namespace SiNote.Domain.Entities;
 
-public class User : Entity, IAuditableEntity
+public class User : AggregateRoot<Guid>
 { 
     public User(
         Guid id,
@@ -16,11 +16,9 @@ public class User : Entity, IAuditableEntity
         PasswordSalt = passwordSalt;
     }
 
-    public string Username { get; set; }
-    public string Email { get; set; }
-    public byte[] PasswordHash { get; set; }
-    public byte[] PasswordSalt { get; set; }
+    public string Username { get; private set; }
+    public string Email { get; private set; }
 
-    public DateTime Created { get; set; }
-    public DateTime? LastModified { get; set; }
+    public byte[] PasswordHash { get; private set; }
+    public byte[] PasswordSalt { get; private set; }
 }
